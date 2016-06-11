@@ -14,3 +14,11 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('verify/{token?}','Auth\AuthController@verify');
+
+Route::post('set-password','Auth\AuthController@setPassword');
+
+Route::auth();
+
+Route::get('/home', 'HomeController@index');

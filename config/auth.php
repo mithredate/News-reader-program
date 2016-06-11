@@ -16,6 +16,7 @@ return [
     'defaults' => [
         'guard' => 'web',
         'passwords' => 'users',
+        'verify' => 'users'
     ],
 
     /*
@@ -103,5 +104,14 @@ return [
             'expire' => 60,
         ],
     ],
+
+    'verify' => [
+        'users' => [
+            'provider' => 'users',
+            'email' => 'auth.emails.verify',
+            'table' => 'password_resets',
+            'expire' => 24 * 60
+        ]
+    ]
 
 ];
