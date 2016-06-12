@@ -32,3 +32,16 @@ $factory->defineAs(App\User::class, 'authenticated_user', function(\Faker\Genera
     ]);
 });
 
+
+$factory->define(App\NewsArticle::class, function (Faker\Generator $faker) {
+    $images = array_slice(scandir(storage_path('glide')),2);
+    shuffle($images);
+    return [
+        'title' => $faker->sentence(),
+        'photo' => array_shift($images),
+        'text' => $faker->paragraph,
+        'reporter_email' => function(){
+            return factory(\App\User::class,'authenticated_user')->create()->email;
+        }
+    ];
+});

@@ -26,6 +26,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies($gate);
 
-        //
+        $gate->define('delete-article', function ($user, $article) {
+            return $user->email === $article->reporter_email;
+        });
     }
 }

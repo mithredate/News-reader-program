@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@index');
 
 Route::get('verify/{token?}','Auth\AuthController@verify');
 
@@ -21,4 +19,12 @@ Route::post('set-password','Auth\AuthController@setPassword');
 
 Route::auth();
 
-Route::get('/home', 'HomeController@index');
+
+Route::group(['prefix' => 'home', 'middleware' => ['web', 'auth']], function(){
+    Route::resource('articles','NewsArticleController');
+    Route::get('/', 'HomeController@index');
+});
+
+Route::get('gallery/{path}', 'ImageController@output')->where('path', '.+');
+
+Route::get('/{slug}', ['as' => 'articles.show', 'uses' => 'NewsController@show']);

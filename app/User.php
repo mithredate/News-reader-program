@@ -67,4 +67,8 @@ class User extends Authenticatable
     {
         $this->update(['status' => $status]);
     }
+
+    public function articles(){
+        return $this->hasMany('App\NewsArticle','reporter_email','email');
+    }
 }

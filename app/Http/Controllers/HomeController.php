@@ -3,27 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use App\NewsArticle;
+use App\Repositories\ArticleRepository;
+use App\User;
+use Faker\Generator;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
      * Show the application dashboard.
      *
+     * @param ArticleRepository $repository
      * @return \Illuminate\Http\Response
+     * @internal param Request $request
      */
-    public function index()
+    public function index(ArticleRepository $repository)
     {
-        return view('home');
+        $articles = $repository->latest(10);
+        return view('home', compact('articles'));
     }
 }
