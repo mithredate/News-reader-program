@@ -13,4 +13,12 @@ class NewsControllerTest extends TestCase
         $this->get($article->slug)
             ->assertResponseStatus(200);
     }
+
+    public function testPDFDownload(){
+        $article = factory(\App\NewsArticle::class)->create();
+        $this->visit($article->slug)
+            ->click('Download PDF')
+            ->assertResponseStatus(200)
+            ->seePageIs($article->slug . '/pdf');
+    }
 }

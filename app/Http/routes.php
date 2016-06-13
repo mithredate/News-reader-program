@@ -28,3 +28,5 @@ Route::group(['prefix' => 'home', 'middleware' => ['web', 'auth']], function(){
 Route::get('gallery/{path}', 'ImageController@output')->where('path', '.+');
 
 Route::get('/{slug}', ['as' => 'articles.show', 'uses' => 'NewsController@show']);
+Route::get('/{slug}/pdf', ['as' => 'articles.pdf', 'uses' => 'NewsController@pdf']);
+

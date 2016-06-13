@@ -25,17 +25,22 @@ class HomeControllerTest extends TestCase
             ->see('No recent news! Want to be the one to tell us what is going on?')
             ->see('Start by registering')
             ->dontSee('Publish your first news');
-        factory(\App\NewsArticle::class)->create(['title' => 'This is a test article']);
+        $firstArticle = factory(\App\NewsArticle::class)->create();
         $this->visit('/')
-            ->see('This is a test article')
+            ->see($firstArticle->title)
             ->dontSee('No recent news!');
-        factory(\App\NewsArticle::class)->times(10)->create();
+        $articles_times_9 = factory(\App\NewsArticle::class)->times(9)->create();
+        $tenthArticle = factory(\App\NewsArticle::class)->create();
         $this->visit('/')
-            ->dontSee('This is a test article');
-
-        factory(\App\NewsArticle::class)->create(['title' => 'This is another test article']);
+            ->see($tenthArticle->title)
+            ->dontSee($firstArticle->title);
+        $articles_times_9->each(function($article){
+           $this->see($article->title);
+        });
+        $lastArticle = factory(\App\NewsArticle::class)->create();
+        $this->assertCount(12, \App\NewsArticle::all());
         $this->visit('/')
-            ->see('This is another test article');
+            ->see($lastArticle->title);
     }
 
     public function testRegisterLink(){

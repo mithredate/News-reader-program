@@ -19,6 +19,7 @@
                 </ol>
                 <div class="btn btn-primary btn-block"><span class="badge">by</span> <strong>{{$article->reporter->email}}</strong></div>
                 <div class="btn btn-danger btn-block"><span class="badge">published at</span> <strong>{{$article->created_at->format('l F jS, Y')}}</strong></div>
+                <a class="btn btn-info btn-block" href="{{ route('articles.pdf',['slug' => $article->slug]) }}"><span class="badge"><i class="fa fa-download"></i></span> <strong>Download PDF</strong></a>
 
             </div>
         </div>

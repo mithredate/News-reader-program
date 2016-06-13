@@ -12,6 +12,7 @@ namespace App\Repositories;
 use App\NewsArticle;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
 
 class ArticleRepository
