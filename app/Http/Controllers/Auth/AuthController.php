@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Facades\Verify;
 use App\Traits\AuthenticateAndRegisterUsersAndResetPasswords;
 use App\User;
 use Illuminate\Auth\Passwords\TokenRepositoryInterface;
@@ -97,7 +98,7 @@ class AuthController extends Controller
         }
         $this->create($request->all());
         $this->subject = 'Verification Email';
-        $response = Password::broker($this->getBroker())->sendResetLink(
+        $response = Verify::broker($this->getBroker())->sendResetLink(
             $this->getSendResetLinkEmailCredentials($request),
             $this->resetEmailBuilder()
         );

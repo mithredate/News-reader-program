@@ -10,8 +10,8 @@ class HomeControllerTest extends TestCase
 
     public function testIndex(){
         $this->visit('/')->assertViewHas('articles');
-        $repository = new \App\Repositories\ArticleRepository();
-        $repository->latest(10)->each(function($article){
+        $articles = \App\NewsArticle::latest()->limit(10)->get();
+        $articles->each(function($article){
             $this->see($article->title);
         });
 
@@ -29,18 +29,6 @@ class HomeControllerTest extends TestCase
         $this->visit('/')
             ->see($firstArticle->title)
             ->dontSee('No recent news!');
-        $articles_times_9 = factory(\App\NewsArticle::class)->times(9)->create();
-        $tenthArticle = factory(\App\NewsArticle::class)->create();
-        $this->visit('/')
-            ->see($tenthArticle->title)
-            ->dontSee($firstArticle->title);
-        $articles_times_9->each(function($article){
-           $this->see($article->title);
-        });
-        $lastArticle = factory(\App\NewsArticle::class)->create();
-        $this->assertCount(12, \App\NewsArticle::all());
-        $this->visit('/')
-            ->see($lastArticle->title);
     }
 
     public function testRegisterLink(){
@@ -68,12 +56,5 @@ class HomeControllerTest extends TestCase
             });
         $this->visit('home')
             ->dontSee('No recent news! Want to be the one to tell us what is going on?');
-
-        factory(\App\NewsArticle::class)->create(['title' => 'This is a test article']);
-
-
-        $this->seeInDatabase('news_articles',['title' => 'This is a test article'])
-            ->visit('home')->see('This is a test article');
-
     }
 }

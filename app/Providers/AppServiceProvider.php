@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Brokers\VerificationBrokerManager;
+use App\Libraries\FileManager;
+use App\Repositories\ArticlesRepository;
 use Illuminate\Auth\Passwords\DatabaseTokenRepository;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
@@ -26,25 +29,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->when('App\Http\Controllers\Auth\AuthController')
-            ->needs('Illuminate\Auth\Passwords\TokenRepositoryInterface')
-            ->give(function($app){
-            $name = $app['config']['auth.defaults.verify'];
-            $config = $app['config']["auth.verify.{$name}"];
-            $key = $app['config']['app.key'];
+        
 
-            if (Str::startsWith($key, 'base64:')) {
-                $key = base64_decode(substr($key, 7));
-            }
+        $this->app->singleton('auth.verify',function ($app) {
+            return new VerificationBrokerManager($app);
+        });
 
-            $connection = isset($config['connection']) ? $config['connection'] : null;
-
-            return new DatabaseTokenRepository(
-                $app['db']->connection($connection),
-                $config['table'],
-                $key,
-                $config['expire']
-            );
+        $this->app->singleton('FileManager', function($app){
+            return new FileManager();
         });
     }
 }
