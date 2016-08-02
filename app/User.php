@@ -49,7 +49,7 @@ class User extends Authenticatable
     }
 
     public function setStatusAttribute($value){
-        $this->attributes['status'] = is_int($value) ?: $value->getStatus();
+        $this->attributes['status'] = is_int($value) ? $value: $value->getStatus();
     }
 
     /**
